@@ -204,7 +204,38 @@ Isso reduz drasticamente:
 - Hashes nunca se repetem  
 - Apenas o primeiro ON e o último OFF importam para a contabilidade  
 - Vetores de fraude colapsam sob validação determinística  
-- O modelo escala de frotas governamentais a empresas privadas  
+- O modelo escala de frotas governamentais a empresas privadas
+
+---
+## 11. Posicionamento Técnico e Estado do Mercado
+
+*monitoramento contínuo**, não em prova determinística de uso.
+
+### Blockchain e Ledgers Imutáveis
+O uso de hashes criptográficos para criar registros auditáveis já é comum em cadeias de suprimentos (petróleo, logística, commodities), validando o **princípio central** do modelo.
+
+### Dispositivos Veiculares
+O mercado oferece rastreadores, alarmes e módulos OBD-II, porém voltados a:
+- anti-furto  
+- gestão operacional  
+- monitoramento em tempo real  
+
+não à geração de **provas auditáveis determinísticas por evento**.
+
+---
+
+## Conclusão
+
+Este projeto **não é uma variação de rastreamento veicular**.  
+Ele propõe uma **categoria diferente**:
+
+> um sistema de **prova criptográfica de uso veicular baseada em eventos físicos**,  
+> não em vigilância contínua.
+
+Isso explica por que ele não existe pronto no mercado —  
+e também por que ele é **interessante**.
+
+---
 
 **O que importa não é o movimento.**  
 **O que importa é a transição de estado.**
