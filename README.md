@@ -65,8 +65,8 @@ O único requisito é que ele seja:
 
 Formalmente:
 
-```text
-timestamp(n+1) > timestamp(n)
+<img width="347" height="25" alt="image" src="https://github.com/user-attachments/assets/83bc92c4-a004-4121-8d9d-8e1ac80f183e" />
+
 para qualquer par de eventos consecutivos registrados pelo mesmo dispositivo.
 
 ### Implicações
