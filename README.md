@@ -129,11 +129,8 @@ A repetição de hash só seria possível se **o tempo parasse**.
 
 A única forma válida de cálculo é:
 
-```text
-Consumo / Distância / Uso =
-  KM_ULTIMO_ENGINE_OFF_DO_DIA
-- KM_PRIMEIRO_ENGINE_ON_DO_DIA
-Eventos intermediários ON/OFF:
+<img width="353" height="128" alt="image" src="https://github.com/user-attachments/assets/5ceba553-f40d-4ecc-8463-1c48f5b035a9" />
+
 
 - são permitidos  
 - aumentam a granularidade da auditoria  
