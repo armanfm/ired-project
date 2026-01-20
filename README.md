@@ -40,14 +40,10 @@ Cada evento representa um **instantâneo do estado do sistema** naquele momento.
 
 Cada hash de evento é calculado a partir das seguintes entradas canônicas:
 
-```text
-HASH = H(
-  tipo_evento,        // ON ou OFF
-  odometro_km,        // leitura exata em km
-  timestamp,          // tempo monotônico
-  device_id,          // identidade do hardware
-  fingerprint_veiculo
-)
+<img width="574" height="202" alt="image" src="https://github.com/user-attachments/assets/a024b070-eebb-4fad-ac40-415cb3dbd11e" />
+
+
+
 ## Propriedades
 
 - Todas as entradas são imutáveis no momento da captura  
