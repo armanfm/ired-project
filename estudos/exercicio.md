@@ -10,7 +10,7 @@
 
 | Dia | Foco | Exercício de Ouro |
 |-----|------|-------------------|
-| **1** | Tipos e overflow na prática | Escreva `uint8 public x = 255;` e uma função `incrementar()` que faz `unchecked { x++; }`. Execute 3 vezes. O que acontece? Por quê? Anote. |
+******************************************************************************************************************************************************************
 | **2** | storage vs memory vs calldata | Crie uma struct `Usuario { string nome; uint idade; }`. Função que modifica `storage` vs `memory` — compare gas no Remix. Descubra por que `uint256` costuma ser mais barato que `uint8` (alinhamento da EVM). |
 | **3** | msg.sender e payable | Contrato "Cofre Simples": `mapping(address => uint) saldos`. Função `depositar() payable` que soma `msg.value` ao saldo de `msg.sender`. Função `sacar(uint valor)` que subtrai e envia ETH. **Sem modifier ainda.** |
 | **4** | require e revert manuais | No mesmo Cofre, adicione `require(saldos[msg.sender] >= valor, "Saldo insuficiente")`. Depois refatore para `if (saldos[msg.sender] < valor) revert("Saldo insuficiente")`. Veja que fazem a mesma coisa. |
