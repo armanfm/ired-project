@@ -1,0 +1,96 @@
+pragma solidity ^0.8.0;
+
+/*
+Gas:
+Gas é o custo para executar operações na blockchain.
+Cada escrita em storage consome mais gas do que leitura.
+
+EVM:
+A Ethereum Virtual Machine (EVM) é o ambiente que executa os contratos
+de forma descentralizada.
+
+Diferença para sistemas tradicionais:
+Não existe servidor central, os dados ficam na blockchain e são imutáveis.
+*/
+
+//aqui é a abertura do meu contrato
+contract RegistroDeUsuariosComRecompensa {
+
+    // Struct do usuário, semelhante a uma classe com seus atributos
+    struct Usuario {
+        string nome;
+        bool registrado;
+    }
+
+    // Mapping para armazenar usuários, como uma tabela (address → Usuario)
+    mapping(address => Usuario) public usuarios;
+
+    // Mapping para armazenar saldo (simulação de token ERC-20 conceitual)
+    mapping(address => uint) public saldos;
+
+    // Eventos são logs registrados na blockchain que permitem acompanhar ações do contrato
+    event UsuarioRegistrado(address carteira, string nome);
+    event RecompensaEnviada(address carteira, uint valor);
+
+     // Função para registrar usuário
+    // Uso 'memory' porque o nome vem de fora (input do usuário),
+    // sendo utilizado temporariamente durante a execução.
+    // Caso estivesse manipulando dados já armazenados no contrato,
+    // utilizaria 'storage' para referenciar esses dados.
+    //Exemplo de uso:registrarUsuario("Armando Freire")
+    function registrarUsuario(string memory nome) public {
+   
+    // O msg.sender representa o endereço (carteira) que chamou a função.
+    // Aqui estamos verificando se esse endereço ainda NÃO está registrado.
+    //require verifica esta condição logica.
+        require(!usuarios[msg.sender].registrado, "Usuario ja registrado");
+
+        // Validação adicional caso a pessoa não escreva o seu nome.
+        //neste caso o sistema exisge apenas 1 caractere 
+        require(bytes(nome).length > 0, "Nome invalido");
+
+        // Salva no storage (blockchain) criado com o seu primeiro saldo e pronto para ser recompensado.
+        usuarios[msg.sender] = Usuario({
+            nome: nome,
+            registrado: true
+        });
+
+        // Dispara evento do event.
+        emit UsuarioRegistrado(msg.sender, nome);
+    }
+
+// Uso 'memory' porque o nome é um dado recebido como entrada da função,
+// sendo armazenado temporariamente durante a execução.
+// A identificação do usuário é feita pela carteira (msg.sender).
+// Com msg.sender acessamos os dados do próprio usuário,
+// enquanto utilizando um endereço como parâmetro (carteira),
+// podemos consultar os dados de qualquer usuário.
+    function consultarUsuario(address carteira) public view returns (string memory, bool, uint) {
+        Usuario memory user = usuarios[carteira];
+        return (user.nome, user.registrado, saldos[carteira]);
+    }
+
+    // Função para recompensar usuário (simulação de token)
+     function recompensarUsuario(address carteira) public {
+    //define o valor da recompensa
+    uint recompensa = 100;
+
+      // Verifica se o usuário existe
+      require(usuarios[carteira].registrado, "Usuario nao registrado");
+
+     // Verifica se o usuário ainda não foi recompensado
+        require(saldos[carteira] == 0, "Usuario ja recompensado");
+
+        // Atualiza saldo (simulação de token)
+        saldos[carteira] += recompensa;
+
+        emit RecompensaEnviada(carteira, recompensa);
+            }
+        }
+
+/*
+Caso de uso real:
+Este contrato pode ser usado em plataformas de fidelidade,
+onde usuários recebem recompensas (tokens simulados)
+por participação em atividades.
+*/
