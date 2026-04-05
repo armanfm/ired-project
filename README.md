@@ -1,1 +1,1 @@
-ambiente de esrtudo solidity.
+ambiente de estudo solidity.
