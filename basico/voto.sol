@@ -14,9 +14,14 @@ contract Baisco is Ownable {
     candidato[] public candidatos;
     mapping(address => bool)  public votou; // mapping para armazenar se o endereço já votou ou não])
    
+  event CandidatoAdicionado(address indexed owner, string nome);
+    event VotoRegistrado(address indexed eleitor, uint indexed candidatoIndex);
+
+
 
     function addCandidato(string memory _nome) public onlyOwner{
         candidatos.push(candidato(_nome,0));
+           emit CandidatoAdicionado(msg.sender, _nome);
     }
 
     function getCandidato(uint _index) public view returns(string memory) {
@@ -26,10 +31,5 @@ contract Baisco is Ownable {
         require(!votou[msg.sender], "Ja votou"); // certo
         votou[msg.sender] = true;
         candidatos[_index].votos++;
-
+        emit VotoRegistrado(msg.sender, _index);
     }
-
-
-
-
-}
