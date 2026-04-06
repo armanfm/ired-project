@@ -65,3 +65,4 @@ function verTodosOsGanhadores() public view returns (Usuario[] memory) {
 
 
 }
+
