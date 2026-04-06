@@ -13,7 +13,7 @@ contract Leilao {
     }
 
     uint public precoMinimo = 1 ether; 
-    uint public precoALvo = 10 ether; 
+  
     Produto[] public produtos;
 
     event LanceProduto(uint indexed id, uint lance);
