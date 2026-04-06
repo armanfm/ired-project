@@ -13,6 +13,10 @@ contract Sorteio{
 Usuario[] public usuarios;
 uint public premio = 100 ether;
 mapping(uint => Usuario) public premiados;
+// 1. Removi o 'view' para o 'emit' funcionar
+// 2. Mudei o retorno para apenas 'Usuario memory'
+// 1. Criamos o Array que permite LISTAR
+Usuario[] public listaGanhadores;
 
 event UsuarioCadastrado(uint idade, string indexed  nome, uint id);
 event UsuarioSorteado(uint idade, string indexed  nome, uint id);
@@ -30,25 +34,34 @@ function cadastrarUsuario(uint _idade, string memory _nome) public { // Removi o
     function verificarUsuario() public view returns (Usuario[] memory) {
         return usuarios;
 }
-// 1. Removi o 'view' para o 'emit' funcionar
-// 2. Mudei o retorno para apenas 'Usuario memory'
+
+
 function sortear() public returns (Usuario memory) {
     require(usuarios.length > 0, "Nenhum usuario cadastrado");
 
     uint indexSorteado = uint(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, usuarios.length))) % usuarios.length;
     
-    // 1. MUDANÇA: Use STORAGE para mexer no banco de dados real
+    // Usamos STORAGE para alterar o banco de dados real
     Usuario storage sorteado = usuarios[indexSorteado];
+    require(sorteado.sorteado == false, "Este usuario ja ganhou");
 
-    require(sorteado.sorteado == false, "Este usuario ja ganhou, sorteie novamente");
-
-    // 2. ADIÇÃO: Você PRECISA marcar como true para o require funcionar na próxima vez!
     sorteado.sorteado = true;
+
+    // 2. A MÁGICA: Além de salvar no mapping, jogamos para o Array de listagem
+    listaGanhadores.push(sorteado);
 
     emit UsuarioSorteado(sorteado.idade, sorteado.nome, sorteado.id);
     premiados[sorteado.id] = sorteado;
 
     return sorteado;
 }
+
+// 3. A FUNÇÃO QUE VOCÊ QUERIA: Ela devolve a lista completa
+function verTodosOsGanhadores() public view returns (Usuario[] memory) {
+    return listaGanhadores;
+}
+
+
+
 
 }
