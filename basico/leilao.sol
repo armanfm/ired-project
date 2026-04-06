@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Leilao {
+
+contract Leilao is Ownable{
     struct Produto{
         uint id;
         string nome;
@@ -11,16 +13,19 @@ contract Leilao {
         uint tempoFinal;
         bool finalizado; // ✅ ADICIONADO → você estava usando mas não existia
     }
+    constructor() Ownable(msg.sender) {}
+
+
 
     uint public precoMinimo = 1 ether; 
-  
+    uint public precoALvo = 10 ether; 
     Produto[] public produtos;
 
     event LanceProduto(uint indexed id, uint lance);
     event ProdutoAdicionado(uint indexed id, string nome, uint preco);
 
     // Função para adicionar um produto
-    function adicionarProduto(string memory _nome, uint _preco) public {
+    function adicionarProduto(string memory _nome, uint _preco) public onlyOwner {
         uint id = produtos.length;
 
         produtos.push(Produto(
