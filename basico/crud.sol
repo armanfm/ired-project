@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-
+import "@openzeppelin/contracts/access/Ownable.sol";
 contract TarefaContrato { 
     struct Tarefa {
         uint id;
@@ -8,7 +8,7 @@ contract TarefaContrato {
         bool concluida;
         bool ativa;
     }
-
+     constructor() Ownable(msg.sender) {}
     Tarefa[] public tarefas;
     mapping(uint => Tarefa) public tarefasMap;
     
@@ -18,7 +18,7 @@ contract TarefaContrato {
     event TarefaExcluida(uint id);
 
     // MUDANÇA: Removi 'novoId' do parâmetro. O contrato gera o ID sozinho.
-    function criarTarefa(string memory _descricao) public {
+    function criarTarefa(string memory _descricao) public onlyOwner{
         require(bytes(_descricao).length > 0, "A descricao nao pode estar vazia");
         
         uint novoId = tarefas.length + 1;
@@ -34,7 +34,7 @@ contract TarefaContrato {
     }
 
     // MUDANÇA: Simplifiquei. Se é para concluir, não precisa de descrição nova.
-    function marcarComoConcluida(uint _id) public {
+    function marcarComoConcluida(uint _id) public onlyOwner {
         // MUDANÇA: Verificamos se o ID existe e se a tarefa está ativa
         require(tarefasMap[_id].id != 0, "Tarefa nao encontrada");
         require(tarefasMap[_id].ativa == true, "Tarefa foi excluida");
@@ -49,7 +49,7 @@ contract TarefaContrato {
 
 
     // Removi o 'bool _ativa' da entrada, pois o contrato já sabe esse valor
-    function listarPorId(uint _id) public view returns (Tarefa memory) {
+    function listarPorId(uint _id) public onlyOwner view returns (Tarefa memory) {
         // 1. Verifica se o ID existe
         require(tarefasMap[_id].id != 0, "Tarefa nao encontrada");
         
@@ -60,7 +60,7 @@ contract TarefaContrato {
     }
 
     // NOVA FUNÇÃO: Para usar o seu campo 'ativa' como um "Delete"
-    function excluirTarefa(uint _id) public {
+    function excluirTarefa(uint _id) public onlyOwner {
         require(tarefasMap[_id].id != 0, "Tarefa nao encontrada");
         
         tarefasMap[_id].ativa = false;
@@ -68,7 +68,7 @@ contract TarefaContrato {
 
         emit TarefaExcluida(_id);
     }
-function listarAtivas() public view returns (Tarefa[] memory) {
+function listarAtivas() public onlyOwner view returns (Tarefa[] memory) {
     uint contadorAtivas = 0;
 
     // 1. Descobrir o tamanho exato do array de retorno
