@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-contract Sorteio{
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract Sorteio is Ownable{
     struct Usuario {
         uint idade;
         string nome;
@@ -10,6 +12,9 @@ contract Sorteio{
 
 
     }
+    constructor() Ownable(msg.sender) {}
+
+
 Usuario[] public usuarios;
 uint public premio = 100 ether;
 mapping(uint => Usuario) public premiados;
@@ -21,7 +26,7 @@ Usuario[] public listaGanhadores;
 event UsuarioCadastrado(uint idade, string indexed  nome, uint id);
 event UsuarioSorteado(uint idade, string indexed  nome, uint id);
 
-function cadastrarUsuario(uint _idade, string memory _nome) public { // Removi o _id daqui
+function cadastrarUsuario(uint _idade, string memory _nome) public onlyOwner { // Removi o _id daqui
     require(bytes(_nome).length > 0, "Nome invalido");
     require(_idade >= 18, "Idade minima de 18 anos");
     
@@ -36,7 +41,7 @@ function cadastrarUsuario(uint _idade, string memory _nome) public { // Removi o
 }
 
 
-function sortear() public returns (Usuario memory) {
+function sortear() public onlyOwner returns (Usuario memory) {
     require(usuarios.length > 0, "Nenhum usuario cadastrado");
 
     uint indexSorteado = uint(keccak256(abi.encodePacked(block.timestamp, block.prevrandao, usuarios.length))) % usuarios.length;
