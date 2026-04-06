@@ -68,4 +68,28 @@ contract TarefaContrato {
 
         emit TarefaExcluida(_id);
     }
+function listarAtivas() public view returns (Tarefa[] memory) {
+    uint contadorAtivas = 0;
+
+    // 1. Descobrir o tamanho exato do array de retorno
+    for (uint i = 0; i < tarefas.length; i++) {
+        if (tarefas[i].ativa == true) {
+            contadorAtivas++;
+        }
+    }
+
+    // 2. Criar o array na memória com o tamanho que contamos
+    Tarefa[] memory somenteAtivas = new Tarefa[](contadorAtivas);
+    uint indiceBusca = 0;
+
+    // 3. Preencher o novo array apenas com quem está ativo
+    for (uint i = 0; i < tarefas.length; i++) {
+        if (tarefas[i].ativa == true) {
+            somenteAtivas[indiceBusca] = tarefas[i];
+            indiceBusca++;
+        }
+    }
+
+    return somenteAtivas;
+}
 }
