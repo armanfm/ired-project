@@ -57,6 +57,7 @@ contract Ingresso is ERC721URIStorage, Ownable, CCIPReceiver {
         for (uint i = 0; i < _quantidade; i++) {
             uint tokenId = eventos[_id].ingressosVendidos + i;
             require(!_minted[tokenId], "Token ja mintado");
+           
             _minted[tokenId] = true;
             _mint(msg.sender, tokenId);
             ingressosUsuario[msg.sender].push(tokenId);
@@ -91,9 +92,12 @@ contract Ingresso is ERC721URIStorage, Ownable, CCIPReceiver {
 
         require(eventoId < eventos.length, "Evento nao encontrado");
         require(eventos[eventoId].ingressosDisponiveis > 0, "Ingressos esgotados");
-
+        uint256 valorRecebido = message.destTokenAmounts[0].amount;
+        require(valorRecebido >= eventos[eventoId].preco, "Pagamento insuficiente");
         uint tokenId = eventos[eventoId].ingressosVendidos;
         require(!_minted[tokenId], "Token ja mintado");
+
+    
         _minted[tokenId] = true;
         _mint(comprador, tokenId);
 
