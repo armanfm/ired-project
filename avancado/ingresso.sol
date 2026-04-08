@@ -7,8 +7,8 @@ import {AggregatorV3Interface} from "@chainlink/contracts@1.3.0/src/v0.8/shared/
 import {CCIPReceiver} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/applications/CCIPReceiver.sol";
 import {Client} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/libraries/Client.sol";
 import {IAny2EVMMessageReceiver} from "@chainlink/contracts-ccip@1.4.0/src/v0.8/ccip/interfaces/IAny2EVMMessageReceiver.sol";
-
-contract Ingresso is ERC721URIStorage, Ownable, CCIPReceiver {
+import "@openzeppelin/contracts@4.9.3/security/ReentrancyGuard.sol";
+contract Ingresso is ERC721URIStorage, Ownable, CCIPReceiver, ReentrancyGuard {
 
     struct Evento {
         uint id;
@@ -49,7 +49,7 @@ contract Ingresso is ERC721URIStorage, Ownable, CCIPReceiver {
         return eventos[_id];
     }
 
-    function comprarIngresso(uint _id, uint _quantidade) public payable {
+    function comprarIngresso(uint _id, uint _quantidade) public payable nonReentrant {
         require(_id < eventos.length, "Evento nao encontrado");
         require(eventos[_id].ingressosDisponiveis >= _quantidade, "Ingressos insuficientes");
         require(msg.value == eventos[_id].preco * _quantidade, "Valor incorreto");
@@ -120,7 +120,7 @@ contract Ingresso is ERC721URIStorage, Ownable, CCIPReceiver {
             interfaceId == type(IAny2EVMMessageReceiver).interfaceId;
     }
 
-    function sacarVendas() public onlyOwner {
+    function sacarVendas() public onlyOwner nonReentrant {
         require(address(this).balance > 0, "Sem saldo");
         (bool sucesso,) = payable(owner()).call{value: address(this).balance}("");
         require(sucesso, "Falha ao sacar");
