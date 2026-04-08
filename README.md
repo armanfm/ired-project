@@ -1,4 +1,4 @@
-# ambiente de estudo solidity.📚 Referências e Estudos
+# 📚 Referências e Estudos
 
 
 **Referências técnicas utilizadas:**
